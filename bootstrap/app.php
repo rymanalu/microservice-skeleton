@@ -63,9 +63,9 @@ $app->singleton(
 //     // Laravel\Lumen\Http\Middleware\VerifyCsrfToken::class,
 // ]);
 
-// $app->routeMiddleware([
-
-// ]);
+$app->routeMiddleware([
+    'check_token' => App\Http\Middleware\CheckToken::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +79,7 @@ $app->singleton(
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\CurlServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\HttpRequestServiceProvider::class);
 

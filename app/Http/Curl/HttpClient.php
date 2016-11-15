@@ -2,12 +2,11 @@
 
 namespace App\Http\Curl;
 
+use GuzzleHttp\RequestOptions;
+use App\Contracts\Http\Curl\Endpoint;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
 
-/**
- * @todo Finish this class...
- */
 class HttpClient implements HttpClientContract
 {
     /**
@@ -29,6 +28,35 @@ class HttpClient implements HttpClientContract
     }
 
     /**
+     * Call an API by the given Endpoint object.
+     *
+     * @param  \App\Contracts\Http\Curl\Endpoint  $endpoint
+     * @param  bool  $wait
+     * @return mixed
+     */
+    public function call(Endpoint $endpoint, $wait = true)
+    {
+        $method = $wait ? 'request' : 'requestAsync';
+
+        $result = $this->getClient()->{$method}(
+            $endpoint->getMethod(), $endpoint->getUri(), $this->options($endpoint->getOptions())
+        );
+
+        return $wait ? new Response($result) : $result;
+    }
+
+    /**
+     * Call an API by the given Endpoint object asynchronously.
+     *
+     * @param  \App\Contracts\Http\Curl\Endpoint  $endpoint
+     * @return mixed
+     */
+    public function callAsync(Endpoint $endpoint)
+    {
+        return $this->call($endpoint, false);
+    }
+
+    /**
      * Get the HTTP Client implementation.
      *
      * @return \GuzzleHttp\ClientInterface
@@ -36,6 +64,24 @@ class HttpClient implements HttpClientContract
     public function getClient()
     {
         return $this->httpClient;
+    }
+
+    /**
+     * Returns the options when call an API.
+     *
+     * @param  array  $options
+     * @return array
+     */
+    protected function options(array $options = [])
+    {
+        $defaults = [
+            RequestOptions::CONNECT_TIMEOUT => 3,
+            RequestOptions::HEADERS => ['Content-Type' => 'application/json'],
+            RequestOptions::HTTP_ERRORS => false,
+            RequestOptions::TIMEOUT => 5,
+        ];
+
+        return array_merge($defaults, $options);
     }
 
     /**

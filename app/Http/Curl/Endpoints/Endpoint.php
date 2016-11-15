@@ -4,8 +4,9 @@ namespace App\Http\Curl\Endpoints;
 
 use GuzzleHttp\Psr7\Request;
 use App\Contracts\Http\Curl\Service;
+use App\Contracts\Http\Curl\Endpoint as EndpointContract;
 
-abstract class Endpoint
+abstract class Endpoint implements EndpointContract
 {
     /**
      * The endpoint URI.
@@ -22,6 +23,13 @@ abstract class Endpoint
     protected $method;
 
     /**
+     * The endpoint's options.
+     *
+     * @var array
+     */
+    protected $options = [];
+
+    /**
      * The Service implementation.
      *
      * @var \App\Contracts\Http\Curl\Service
@@ -32,11 +40,14 @@ abstract class Endpoint
      * Create a new Endpoint instance.
      *
      * @param  \App\Contracts\Http\Curl\Service  $service
+     * @param  array  $data
      * @return void
      */
-    public function __construct(Service $service)
+    public function __construct(Service $service, array $data = [])
     {
         $this->service = $service;
+
+        $this->options['json'] = $data;
     }
 
     /**
@@ -60,13 +71,13 @@ abstract class Endpoint
     }
 
     /**
-     * Get the endpoint options (the format must be follow GuzzleHttpClient request options).
+     * Get the endpoint options.
      *
      * @return array
      */
     public function getOptions()
     {
-        return [];
+        return $this->options;
     }
 
     /**
