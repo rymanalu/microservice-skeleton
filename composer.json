@@ -11,7 +11,8 @@
         "league/fractal": "^0.14.0",
         "predis/predis": "~1.0",
         "illuminate/redis": "~5.1",
-        "aws/aws-sdk-php": "~3.0"
+        "aws/aws-sdk-php": "~3.0",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
