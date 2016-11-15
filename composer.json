@@ -34,7 +34,7 @@
         ]
     },
     "scripts": {
-        "post-root-package-install": [
+        "post-install-cmd": [
             "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ]
     },
