@@ -75,7 +75,7 @@ abstract class Facade
      */
     protected function getEndpointClassName($class)
     {
-        return 'App\Http\Curl\Endpoints\\'.$this->getServiceClassName().'\\'.studly_case($class);
+        return 'App\Http\Curl\Endpoints\\'.$this->getServiceClassName().'\\'.studly_case($class).'Endpoint';
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Curl;
 
+use Exception;
 use GuzzleHttp\RequestOptions;
 use App\Contracts\Http\Curl\Endpoint;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
@@ -75,10 +76,10 @@ class HttpClient implements HttpClientContract
     protected function options(array $options = [])
     {
         $defaults = [
-            RequestOptions::CONNECT_TIMEOUT => 3,
+            RequestOptions::CONNECT_TIMEOUT => env('CONNECT_TIMEOUT', 3),
             RequestOptions::HEADERS => ['Content-Type' => 'application/json'],
             RequestOptions::HTTP_ERRORS => false,
-            RequestOptions::TIMEOUT => 5,
+            RequestOptions::TIMEOUT => env('TIMEOUT', 5),
         ];
 
         return array_merge($defaults, $options);
