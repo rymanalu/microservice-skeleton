@@ -65,6 +65,7 @@ $app->singleton(
 
 $app->routeMiddleware([
     'check_token' => App\Http\Middleware\CheckToken::class,
+    'throttle' => App\Http\Middleware\ThrottleRequests::class,
 ]);
 
 /*
