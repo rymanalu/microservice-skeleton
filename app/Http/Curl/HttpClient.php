@@ -5,6 +5,8 @@ namespace App\Http\Curl;
 use Exception;
 use GuzzleHttp\RequestOptions;
 use App\Contracts\Http\Curl\Endpoint;
+use App\Contracts\Cache\CircuitBreaker;
+use App\Exceptions\CircuitBreakerException;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
 
@@ -18,14 +20,23 @@ class HttpClient implements HttpClientContract
     protected $httpClient;
 
     /**
+     * The circuit breaker implementation.
+     *
+     * @var \App\Contracts\Cache\CircuitBreaker
+     */
+    protected $circuitBreaker;
+
+    /**
      * Create a new HttpClient instance.
      *
      * @param  \GuzzleHttp\ClientInterface  $httpClient
      * @return void
      */
-    public function __construct(GuzzleHttpClientContract $httpClient)
+    public function __construct(GuzzleHttpClientContract $httpClient, CircuitBreaker $circuitBreaker)
     {
         $this->httpClient = $httpClient;
+
+        $this->circuitBreaker = $circuitBreaker;
     }
 
     /**
@@ -34,9 +45,13 @@ class HttpClient implements HttpClientContract
      * @param  \App\Contracts\Http\Curl\Endpoint  $endpoint
      * @param  bool  $wait
      * @return mixed
+     *
+     * @throws \App\Exceptions\CircuitBreakerException
      */
     public function call(Endpoint $endpoint, $wait = true)
     {
+        $this->checkEndpoint($endpoint);
+
         $method = $wait ? 'request' : 'requestAsync';
 
         $result = $this->getClient()->{$method}(
@@ -51,6 +66,8 @@ class HttpClient implements HttpClientContract
      *
      * @param  \App\Contracts\Http\Curl\Endpoint  $endpoint
      * @return mixed
+     *
+     * @throws \App\Exceptions\CircuitBreakerException
      */
     public function callAsync(Endpoint $endpoint)
     {
@@ -65,6 +82,23 @@ class HttpClient implements HttpClientContract
     public function getClient()
     {
         return $this->httpClient;
+    }
+
+    /**
+     * Check if the given endpoint is unavailable.
+     *
+     * @param  \App\Contracts\Http\Curl\Endpoint  $endpoint
+     * @return void
+     *
+     * @throws \App\Exceptions\CircuitBreakerException
+     */
+    protected function checkEndpoint(Endpoint $endpoint)
+    {
+        $key = sha1($endpoint->getUri());
+
+        if ($this->circuitBreaker->tooManyErrors($key, env('CIRCUIT_BREAKER_MAX', 10), env('CIRCUIT_BREAKER_DECAY', 1))) {
+            throw new CircuitBreakerException('Currently, the server is unavailable. Please try again later.');
+        }
     }
 
     /**

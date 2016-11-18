@@ -2,6 +2,7 @@
 
 namespace App\Http\Curl\Facades;
 
+use RuntimeException;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
 
 abstract class Facade
@@ -87,6 +88,10 @@ abstract class Facade
      */
     public function __call($method, array $parameters)
     {
+        if (! static::$httpClient instanceof HttpClientContract) {
+            throw new RuntimeException('httpClient is not an instance of '.HttpClientContract::class.'.');
+        }
+
         $endpoint = $this->getEndpoint($method, $parameters);
 
         return static::$httpClient->call($endpoint);
