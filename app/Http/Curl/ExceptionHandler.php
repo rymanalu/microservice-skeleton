@@ -157,13 +157,11 @@ class ExceptionHandler
      */
     protected function track(GuzzleException $e, $code)
     {
-        if (! static::$circuitBreaker instanceof CircuitBreaker || ! $e instanceof RequestException || 503 != $code) {
-            return;
+        if (static::$circuitBreaker instanceof CircuitBreaker && $e instanceof RequestException && 503 == $code) {
+            $key = $this->resolveRequestSignature($e);
+
+            static::$circuitBreaker->track($key, env('CIRCUIT_BREAKER_DECAY', 1));
         }
-
-        $key = $this->resolveRequestSignature($e);
-
-        static::$circuitBreaker->track($key, env('CIRCUIT_BREAKER_DECAY', 1));
     }
 
     /**
