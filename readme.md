@@ -47,13 +47,13 @@ PS: This skeleton use Guzzle (`guzzlehttp/guzzle`) to send the HTTP requests.
 
 The **Services** jargon here means all your other microservices. Define your services in `app/Http/Curl/Services` by creating a new class that must implements the `App\Contracts\Http\Curl\Service` interface.
 
-The class name must use **Service** suffix. Example: UserService represents the user microservice.
+The class name must use **Service** suffix. Example: `UserService` represents the user microservice.
 
 #### Endpoints
 
 Define all the endpoints by grouping it to a folder where the folder's name is same with the service and place them to `app/Http/Curl/Endpoints` folder.
 
-For example, we have user microservice that has check token endpoint. So we create a new folder named **User**, and create a new class like this: **CheckTokenEndpoint** (always use **Endpoint** suffix).
+For example, we have user microservice that has check token endpoint. So we create a new folder named **User**, and create a new class like this: `CheckTokenEndpoint` (always use **Endpoint** suffix).
 
 #### Facades
 
