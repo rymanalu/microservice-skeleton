@@ -73,7 +73,7 @@ If you must send some data to the endpoint, just pass it in an associative array
 
 #### Responses
 
-The returned HTTP response will become a `App\Http\Curl\Response` object that some convenient methods, like `isSuccessful()` and `getBody($toArray = false)` (check each docblock for the description).
+The returned HTTP response will become a `App\Http\Curl\Response` object that has some convenient methods, like `isSuccessful()` and `getBody($toArray = false)` (check each docblock for the description).
 
 And yes, you still can calls the GuzzleHttp Response methods automagically from this object.
 
