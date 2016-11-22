@@ -32,9 +32,7 @@ class Response implements ResponseContract
      */
     public function isSuccessful()
     {
-        $status = $this->getBody() ? $this->getBody()->status->succeded : false;
-
-        return $this->response->getStatusCode() >= 200 && $this->response->getStatusCode() < 300 && $status;
+        return $this->response->getStatusCode() >= 200 && $this->response->getStatusCode() < 300;
     }
 
     /**
