@@ -45,7 +45,7 @@ class CheckToken
      */
     protected function tokenIsValid($request)
     {
-        $result = User::checkToken(['token' => $request->input('token')]);
+        $result = User::checkToken(['json' => ['token' => $request->input('token')]]);
 
         return $result->isSuccessful();
     }

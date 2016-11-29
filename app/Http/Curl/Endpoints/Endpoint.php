@@ -27,7 +27,7 @@ abstract class Endpoint implements EndpointContract
      *
      * @var array
      */
-    protected $options = [];
+    protected $options;
 
     /**
      * The Service implementation.
@@ -40,14 +40,14 @@ abstract class Endpoint implements EndpointContract
      * Create a new Endpoint instance.
      *
      * @param  \App\Contracts\Http\Curl\Service  $service
-     * @param  array  $data
+     * @param  array  $options
      * @return void
      */
-    public function __construct(Service $service, array $data = [])
+    public function __construct(Service $service, array $options = [])
     {
         $this->service = $service;
 
-        $this->options['json'] = $data;
+        $this->options = $options;
     }
 
     /**

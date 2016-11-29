@@ -63,13 +63,13 @@ For example: `App\Http\Curl\Facades\User` for `App\Http\Curl\Services\UserServic
 
 #### How To Call
 
-This skeleton has example classes that I've explained above. If you open `app/Http/Middleware/CheckToken.php`, you will see that I use the `App\Http\Curl\Facades\User` facade to call the check token endpoint in line 48: `User::checkToken(['token' => $request->input('token')])`.
+This skeleton has example classes that I've explained above. If you open `app/Http/Middleware/CheckToken.php`, you will see that I use the `App\Http\Curl\Facades\User` facade to call the check token endpoint in line 48: `User::checkToken(['json' => ['token' => $request->input('token')]]);`.
 
 That block means that I call the check token endpoint (`App\Http\Curl\Endpoints\User\CheckTokenEndpoint`) that belongs to user microservice (`App\Http\Curl\Services\UserService`).
 
 Another example, if you have get profile endpoint that belongs to user microservice, create a new endpoint class named `GetProfileEndpoint`. Then call the endpoint like this: `User::getProfile()`.
 
-If you must send some data to the endpoint, just pass it in an associative array. Example, you must send the user's id when call get profile: `User::getProfile(['id' => 12])`. Of course, the keys of the associative array must follows the requirements of the endpoint. If the endpoint needs `user_id` parameter, then changed it to `User::getProfile(['user_id' => 12])`.
+If you must send some data or options to the endpoint, just pass it in an associative array. Since we use Guzzle, you must follow the Guzzle array options format ([http://docs.guzzlephp.org/en/latest/request-options.html](http://docs.guzzlephp.org/en/latest/request-options.html)). Example, you must send the user's id data in JSON when call get profile: `User::getProfile(['json' => ['id' => 12]])`. Of course, the keys of the associative array JSON data must follows the requirements of the endpoint. If the endpoint needs `user_id` parameter, then changed it to `User::getProfile(['json' => ['user_id' => 12]])`.
 
 #### Responses
 
