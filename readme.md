@@ -63,7 +63,7 @@ For example: `App\Http\Curl\Facades\User` for `App\Http\Curl\Services\UserServic
 
 #### How To Call
 
-This skeleton has example classes that I've explained above. If you open `app/Http/Middleware/CheckToken.php`, you will see that I use the `App\Http\Curl\Facades\User` facade to call the check token endpoint in line 48: `User::checkToken(['json' => ['token' => $request->input('token')]]);`.
+This skeleton has example classes that I've explained above. If you open `app/Http/Middleware/CheckToken.php`, you will see that I use the `App\Http\Curl\Facades\User` facade to call the check token endpoint in line 69: `User::checkToken(['json' => ['token' => $request->input('token')]]);`.
 
 That block means that I call the check token endpoint (`App\Http\Curl\Endpoints\User\CheckTokenEndpoint`) that belongs to user microservice (`App\Http\Curl\Services\UserService`).
 
