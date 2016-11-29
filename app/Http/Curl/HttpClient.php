@@ -111,7 +111,6 @@ class HttpClient implements HttpClientContract
     {
         $defaults = [
             RequestOptions::CONNECT_TIMEOUT => env('CONNECT_TIMEOUT', 3),
-            RequestOptions::HEADERS => ['Content-Type' => 'application/json'],
             RequestOptions::HTTP_ERRORS => false,
             RequestOptions::TIMEOUT => env('TIMEOUT', 5),
         ];
