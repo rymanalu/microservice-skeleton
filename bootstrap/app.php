@@ -79,6 +79,8 @@ $app->routeMiddleware([
 |
 */
 
+$app->register(Rymanalu\LaravelCircuitBreaker\CircuitBreakerServiceProvider::class);
+
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\CurlServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);

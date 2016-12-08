@@ -5,9 +5,9 @@ namespace App\Http\Curl;
 use Exception;
 use GuzzleHttp\RequestOptions;
 use App\Contracts\Http\Curl\Endpoint;
-use App\Contracts\Cache\CircuitBreaker;
 use App\Exceptions\CircuitBreakerException;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
+use Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
 
 class HttpClient implements HttpClientContract
@@ -22,7 +22,7 @@ class HttpClient implements HttpClientContract
     /**
      * The circuit breaker implementation.
      *
-     * @var \App\Contracts\Cache\CircuitBreaker
+     * @var \Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface
      */
     protected $circuitBreaker;
 
@@ -30,9 +30,10 @@ class HttpClient implements HttpClientContract
      * Create a new HttpClient instance.
      *
      * @param  \GuzzleHttp\ClientInterface  $httpClient
+     * @param  \Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface  $circuitBreaker
      * @return void
      */
-    public function __construct(GuzzleHttpClientContract $httpClient, CircuitBreaker $circuitBreaker)
+    public function __construct(GuzzleHttpClientContract $httpClient, CircuitBreakerInterface $circuitBreaker)
     {
         $this->httpClient = $httpClient;
 
@@ -96,7 +97,7 @@ class HttpClient implements HttpClientContract
     {
         $key = sha1($endpoint->getUri());
 
-        if ($this->circuitBreaker->tooManyErrors($key, env('CIRCUIT_BREAKER_MAX', 10), env('CIRCUIT_BREAKER_DECAY', 1))) {
+        if ($this->circuitBreaker->tooManyFailures($key, env('CIRCUIT_BREAKER_MAX', 10), env('CIRCUIT_BREAKER_DECAY', 1))) {
             throw new CircuitBreakerException('Currently, the server is unavailable. Please try again later.');
         }
     }

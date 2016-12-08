@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dce8ae02ff3d53c8093c6510df88ebbc",
-    "content-hash": "7b30d9141d41298227383ac7789d639c",
+    "hash": "5ec7c073fd5d0c16b741f752fd2f332d",
+    "content-hash": "46e497a2d15861bd2a8dffafba54ce1f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.20.1",
+            "version": "3.20.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c83afe188b2f462840a5ab12d43f2e83f356f3f0"
+                "reference": "da0d8955770c3c84007bfe7c652351af2c031068"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c83afe188b2f462840a5ab12d43f2e83f356f3f0",
-                "reference": "c83afe188b2f462840a5ab12d43f2e83f356f3f0",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/da0d8955770c3c84007bfe7c652351af2c031068",
+                "reference": "da0d8955770c3c84007bfe7c652351af2c031068",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-12-01 19:25:12"
+            "time": "2016-12-07 22:50:22"
         },
         {
             "name": "danielstjules/stringy",
@@ -2140,6 +2140,54 @@
                 "psr-3"
             ],
             "time": "2016-10-10 12:19:37"
+        },
+        {
+            "name": "rymanalu/laravel-circuit-breaker",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rymanalu/laravel-circuit-breaker.git",
+                "reference": "7065fe6c40df7115237493a2eebdd0929c69a02f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rymanalu/laravel-circuit-breaker/zipball/7065fe6c40df7115237493a2eebdd0929c69a02f",
+                "reference": "7065fe6c40df7115237493a2eebdd0929c69a02f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^5.0",
+                "illuminate/support": "^5.0",
+                "nesbot/carbon": "^1.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rymanalu\\LaravelCircuitBreaker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roni Yusuf Manalu",
+                    "email": "rymanalu@gmail.com"
+                }
+            ],
+            "description": "Circuit Breaker pattern implementation in Laravel 5.",
+            "homepage": "https://github.com/rymanalu/laravel-circuit-breaker",
+            "keywords": [
+                "circuit breaker",
+                "laravel"
+            ],
+            "time": "2016-12-08 09:13:30"
         },
         {
             "name": "symfony/console",

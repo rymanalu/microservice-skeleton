@@ -4,11 +4,11 @@ namespace App\Http\Curl;
 
 use RuntimeException;
 use App\Http\Curl\CurlHttpCode;
-use App\Contracts\Cache\CircuitBreaker;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use App\Exceptions\CircuitBreakerException;
+use Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface;
 
 class ExceptionHandler
 {
@@ -22,7 +22,7 @@ class ExceptionHandler
     /**
      * The CircuitBreaker implementation.
      *
-     * @var \App\Contracts\Cache\CircuitBreaker
+     * @var \Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface
      */
     protected static $circuitBreaker;
 
@@ -72,10 +72,10 @@ class ExceptionHandler
     /**
      * Set the CircuitBreaker instance for this class.
      *
-     * @param  \App\Contracts\Cache\CircuitBreaker $circuitBreaker
+     * @param  \Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface $circuitBreaker
      * @return void
      */
-    public static function setCircuitBreaker(CircuitBreaker $circuitBreaker)
+    public static function setCircuitBreaker(CircuitBreakerInterface $circuitBreaker)
     {
         static::$circuitBreaker = $circuitBreaker;
     }
@@ -157,7 +157,7 @@ class ExceptionHandler
      */
     protected function track(GuzzleException $e, $code)
     {
-        if (static::$circuitBreaker instanceof CircuitBreaker && $e instanceof RequestException && 503 == $code) {
+        if (static::$circuitBreaker instanceof CircuitBreakerInterface && $e instanceof RequestException && 503 == $code) {
             $key = $this->resolveRequestSignature($e);
 
             static::$circuitBreaker->track($key, env('CIRCUIT_BREAKER_DECAY', 1));
