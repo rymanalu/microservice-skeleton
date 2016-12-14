@@ -85,6 +85,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\CurlServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\HttpRequestServiceProvider::class);
+$app->register(App\Providers\UserValidatorServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

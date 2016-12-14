@@ -3,18 +3,27 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Validator;
-use App\Http\Curl\Facades\User;
 use App\Support\User as UserObject;
+use App\Contracts\Support\UserValidator;
 
 class CheckToken
 {
     /**
-     * The response body from check token API.
+     * The UserValidator implementation.
      *
-     * @var array
+     * @var \App\Contracts\Support\UserValidator
      */
-    protected $checkTokenResponseBody;
+    protected $userValidator;
+
+    /**
+     * Create a new middleware instance.
+     *
+     * @param  \App\Contracts\Support\UserValidator  $userValidator
+     */
+    public function __construct(UserValidator $userValidator)
+    {
+        $this->userValidator = $userValidator;
+    }
 
     /**
      * Handle an incoming request.
@@ -25,7 +34,7 @@ class CheckToken
      */
     public function handle($request, Closure $next)
     {
-        if ($this->tokenIsPresent($request) && $this->tokenIsValid($request)) {
+        if ($this->userValidator->passes()) {
             $this->addUserToRequest($request);
 
             return $next($request);
@@ -42,34 +51,6 @@ class CheckToken
      */
     protected function addUserToRequest($request)
     {
-        $request->request->add(['user' => new UserObject($this->checkTokenResponseBody['user'])]);
-    }
-
-    /**
-     * Check if the token is present in the current request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
-     */
-    protected function tokenIsPresent($request)
-    {
-        $validator = Validator::make($request->all(), ['token' => 'required']);
-
-        return $validator->passes();
-    }
-
-    /**
-     * Check if the token is valid.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
-     */
-    protected function tokenIsValid($request)
-    {
-        $result = User::checkToken(['json' => ['token' => $request->input('token')]]);
-
-        $this->checkTokenResponseBody = $result->getBody(true);
-
-        return $result->isSuccessful();
+        $request->request->add(['user' => new UserObject($this->userValidator->getUser())]);
     }
 }
